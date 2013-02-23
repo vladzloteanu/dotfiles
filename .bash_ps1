@@ -1,0 +1,51 @@
+DULL=0
+BRIGHT=1
+
+FG_BLACK=30
+FG_RED=31
+FG_GREEN=32
+FG_YELLOW=33
+FG_BLUE=34
+FG_VIOLET=35
+FG_CYAN=36
+FG_WHITE=37
+
+FG_NULL=00
+
+BG_BLACK=40
+BG_RED=41
+BG_GREEN=42
+BG_YELLOW=43
+BG_BLUE=44
+BG_VIOLET=45
+BG_CYAN=46
+BG_WHITE=47
+
+BG_NULL=00
+
+ESC="\033"
+NORMAL="\[$ESC[m\]"
+RESET="\[$ESC[${DULL};${FG_WHITE};${BG_NULL}m\]"
+
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+GREEN="\[\033[0;32m\]"
+WHITE="\[$ESC[${DULL};${FG_WHITE}m\]"
+BLUE="\[$ESC[${DULL};${FG_BLUE}m\]"
+VIOLET="\[$ESC[${DULL};${FG_VIOLET}m\]"
+
+function is_inside_ig {
+  git status &> /dev/null
+}
+
+function parse_git_root_folder {
+  git status &> /dev/null
+  if [ $? = 0 ]; then echo `git rev-parse --show-toplevel | sed "s/.*\///g"`; else echo 'ツ'; fi
+}
+
+function parse_git_branch {
+  local br=`__git_ps1 | sed "s/\(\)//g"`
+  echo $br
+}
+
+PS1="$YELLOW\$(parse_git_root_folder)$RED\$(parse_git_branch) $WHITE\w $WHITE" 
